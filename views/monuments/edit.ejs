@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%= title %></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: white;
+}
+
+.active {
+  background-color: #4CAF50; 
+}
+</style>
+</head>
+<body>
+  <div>
+       <ul>
+      <li><a href="/"><%= title %><span class="sr-only">(current)</span></a></li>
+      <li><a href="/add">Add User</a></li>
+      <li><a href="/monuments">Show Monuments</a></li>
+      <li><a href="/AnassMap">Show map</a></li>
+    </ul>
+  </div>
+
+<div style="margin-top: 80px" class="container">
+  <h2>GESTION MONUMENTS</h2>
+  <form style="margin-top: 40PX" action="/monuments/update" method="post">
+   
+    <div class="form-group">
+      <label for="id">Id:</label>
+      <input type="text" class="form-control" id="email" placeholder="Enter id" value="<%= e.id %>" name="id" required>
+    </div>
+    <div class="form-group">
+      <label for="nom">Nom:</label>
+      <input type="text" class="form-control" id="email" placeholder="Enter name" value="<%= e.nom %>" name="nom" required>
+    </div>
+	<div class="form-group">
+      <label for="latitude">latitude:</label>
+      <input type="text" class="form-control" id="email" placeholder="Enter latitude" value="<%= e.latitude %>" name="latitude" required>
+    </div>
+	<div class="form-group">
+      <label for="longitude">longitude:</label>
+      <input type="text" class="form-control" id="email" placeholder="Enter longitude" value="<%= e.longitude %>" name="longitude" required>
+    </div>
+	<div class="form-group">
+      <label for="ville">ville:</label>
+      <input type="text" class="form-control" id="email" placeholder="Enter ville" value="<%= e.ville %>" name="ville" required>
+    </div>
+    <button type="submit" class="btn btn-dark">Submit</button>
+  </form>
+</div>
+
+</body>
+</html>

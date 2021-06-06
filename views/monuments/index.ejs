@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title><%= title %></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style>
+    #map{
+      height:400px;
+      width:100%;
+    }
+    ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: white;
+}
+
+.active {
+  background-color: #4CAF50; 
+}
+  </style>
+</head>
+<body>
+  <div>
+       <ul>
+      <li><a href="/"><i><img height="30" width="80" src="https://lh3.googleusercontent.com/proxy/TghonBkjzmxbyVYGix_kQ5L5dQdoSgNpyGfuK-jbUk09kkh9JHuBBV-a1PF6LGHgC-mO_F08A3r7FGkm9QaeTuaoX8SczE3Z"></i>GESTION ETUDIANTS<span class="sr-only">(current)</span></a></li>
+      <li><a href="/add"><i><img height="20" width="20" src="https://www.flaticon.com/svg/vstatic/svg/1077/1077012.svg?token=exp=1620314388~hmac=8e793cd646365269bfdd35149927db40"></i>Add User</a></li>
+      <li><a href="/monuments"><i><img height="20" width="20" src="https://www.flaticon.com/svg/vstatic/svg/1397/1397898.svg?token=exp=1620314633~hmac=0f2ee053a479e9c3cb69cbb3992b541a"></i>Show Monuments</a></li>
+      <li><a href="/AnassMap"><i><img height="20" width="20" src="https://www.flaticon.com/svg/vstatic/svg/854/854878.svg?token=exp=1620314701~hmac=a28780419acca3d00313a0f3ebd8ed96"></i>Show map</a></li>
+    </ul>
+  </div>
+
+
+<div class="container">
+  <h2 style="margin-top: 80px">GESTION MONUMENTS</h2>
+  <a style="margin-top: 20px" href="/monuments/add" class="btn btn-sm btn-outline-dark">Add Monument</a><br/><br/>
+
+  <table class="table table-dark table-striped">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>NOM</th>
+		    <th>latitude</th>
+		    <th>longitude</th>
+		    <th>ville</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% etudiant.forEach(function(e){ %>
+            <tr>
+                <td><%= e.id %></td>
+                <td><%= e.nom %></td>
+                <td><%= e.latitude %></td>
+				        <td><%= e.longitude %></td>
+				        <td><%= e.ville %></td>
+                <td>
+                    <a href="monuments/edit/<%= e.id %>" class="btn btn-sm btn-primary">Edit</a>
+                    <a href="monuments/delete/<%= e.id %>" class="btn btn-sm btn-danger">Delete</a>
+                    <button type="button" class="btn btn-sm btn-success mappage" >show position</button>
+
+                </td>
+            </tr>
+        <% }); %>
+    </tbody>
+  </table>
+</div>
+
+<div id="map"></div>
+
+<script>  
+  var c =  Array();
+
+
+ var x = document.getElementById("email1").value;
+ var y = document.getElementById("email2").value;
+ const d = document.getElementsByClassName("mappage");
+ 
+ 
+   function initMap(){
+     
+    
+     // Map options
+     var options = {
+       zoom:4,
+       center:{lat:31.7945,lng: -7.0849}
+     }
+     
+     
+     for(var i = 0;i<c.length;i++){
+       // Add marker 
+     
+     
+      
+     new google.maps.Marker(c[i]
+         )
+       }
+       
+
+     // New map
+     var map = new google.maps.Map(document.getElementById('map'), options);
+
+     
+    /* for (var i = 0; i < d; i++) {
+    d[i].addEventListener('click', RespondClick());
+}*/
+$(document).on('click', '.mappage', function () {
+   
+    var lati = $(this).closest('tr').find('td').eq(0).text();
+      
+       const myLatLng = { lat: parseFloat($(this).closest('tr').find('td').eq(2).text()), lng: parseFloat($(this).closest('tr').find('td').eq(3).text()) };
+         
+       var op='C:/xampp/htdocs/expressjs/views/monuments/CorrectionEnoncé.png';
+       var marker = new google.maps.Marker({
+       position: myLatLng,
+       map:map,
+       title: "Hello World!",
+       icon: 'https://www.flaticon.com/svg/vstatic/svg/684/684908.svg?token=exp=1620312460~hmac=2aabde08339aff9d23cea229944b0b7f'
+     });
+     var infowindow = new google.maps.InfoWindow({
+     content   : '<h1>this is a Monument</h1>'
+   });
+   
+   // show info window when marker is clicked
+   google.maps.event.addListener(marker, 'click', function() {          
+
+     infowindow.open( map, marker );
+
+   });
+     
+ })
+     // Listen for click on map
+     /*google.maps.event.addListener('map', 'click', function(event){
+       // Add marker
+   d.push({
+         coords:{lat:x,lng:y},
+         iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+         content:'<h1>Lynn MA</h1>'
+       })
+   
+       for(var i = 0;i < d.length;i++){
+       // Add marker
+       addMarker(d[i]);
+     }
+     });*/
+
+     /*
+     // Add marker
+     var marker = new google.maps.Marker({
+       position:{lat:31.7945,lng:-7.0849},
+       map:map,
+       icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+     });
+
+     var infoWindow = new google.maps.InfoWindow({
+       content:'<h1>Lynn MA</h1>'
+     });
+
+     marker.addListener('click', function(){
+       infoWindow.open(map, marker);
+     });
+     */
+   
+
+     // Array of markers
+   
+   
+   }
+ /*function anasss(){
+   alert(parseFloat(document.getElementById("email1").value));
+   alert(document.getElementById("email2").value);
+   markers.push({
+         coords:{lat:parseFloat(document.getElementById("email1").value),lng:parseFloat(document.getElementById("email2").value)},
+         iconImage:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+         content:'<h1>Lynn MA</h1>'
+       })
+   
+       for(var i = 0;i < markers.length;i++){
+       // Add marker
+       addMarker(markers[i]);
+   var marker = new google.maps.Marker({
+       position:{lat:31.7945,lng:-7.0849},
+       map:map,
+       icon:'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'
+     });
+   
+     }
+   
+   }*/
+ </script>
+ <script async defer
+ src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAXiKlz-u4w3wOeTD8XyOcLfYzZ4FMzXR4&callback=initMap">
+ </script>
+
+</body>
+</html>
